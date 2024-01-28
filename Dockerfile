@@ -7,7 +7,8 @@ RUN go mod download
 RUN go install github.com/a-h/templ/cmd/templ@latest
 
 COPY main.go  .
-COPY src/ src/
+COPY cmd ./cmd
+# TODO
 
 RUN templ generate
 RUN go build -o ./goapp
@@ -16,8 +17,5 @@ RUN go build -o ./goapp
 FROM alpine:latest as release
 COPY --from=goapp /app/goapp /goapp
 
-COPY migrations/ /migrations
-ENV MIGRATIONS_DIR=/migrations
-
 WORKDIR /app
-CMD ["/goapp", "start"]
+CMD ["/goapp"]

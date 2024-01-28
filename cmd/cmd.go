@@ -1,9 +1,8 @@
-package server
+package cmd
 
 import (
-	"goth/src/cmd/migrate"
-	"goth/src/config"
-	"goth/src/routes"
+	"goth/config"
+	"goth/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -13,10 +12,6 @@ import (
 func Start(cmd *cobra.Command, args []string) {
 	cfg := config.GetServerConfigs()
 
-	if cfg.AutoMigrate {
-		migrate.Up(cmd, args)
-	}
-
 	app := fiber.New(fiber.Config{
 		ErrorHandler: routes.ErrorHandler,
 	})
@@ -25,6 +20,19 @@ func Start(cmd *cobra.Command, args []string) {
 	routes.Init(app, cfg)
 
 	if err := app.Listen(cfg.ServerAddress); err != nil {
+		panic(err.Error())
+	}
+}
+
+var rootCmd = &cobra.Command{
+	Use:   "thor",
+	Short: "start thor server",
+	Run:   Start,
+}
+
+func Execute() {
+	err := rootCmd.Execute()
+	if err != nil {
 		panic(err.Error())
 	}
 }

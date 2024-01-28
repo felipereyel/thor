@@ -2,7 +2,7 @@ package components
 
 import (
     "fmt"
-	"goth/src/models"
+	"goth/models"
 )
 
 // Full Page
@@ -87,9 +87,9 @@ templ PostLogoutPage() {
     }
 }
 
-// Tasks Views
+// Torrent Views
 
-templ TaskListPage(tasks []models.Task) {
+templ TaskListPage(tasks []models.Torrent) {
     @authenticatedPage("Tasks List", "Tasks", "Open Tasks To Do") {
         <div>
             <ul id="wrapper" class="border border-slate-600 rounded overflow-hidden shadow-md">
@@ -112,7 +112,7 @@ templ TaskListPage(tasks []models.Task) {
     }
 }
 
-templ TaskEditPage(task models.Task) {
+templ TaskEditPage(task models.Torrent) {
     @authenticatedPage("Task Editor", fmt.Sprintf("Tasks > %s", task.Title), "Edit this task") {
         <div>
             <div class="flex flex-col">
