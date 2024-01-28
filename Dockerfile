@@ -8,6 +8,7 @@ RUN go install github.com/a-h/templ/cmd/templ@latest
 
 COPY main.go  .
 COPY cmd ./cmd
+COPY internal ./internal
 # TODO
 
 RUN templ generate

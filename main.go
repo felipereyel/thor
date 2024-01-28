@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goth/src/cmd"
+	"thor/src/cmd"
 )
 
 func main() {

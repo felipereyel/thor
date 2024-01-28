@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"goth/config"
+	"thor/internal/config"
 
 	"github.com/gofiber/fiber/v2"
 )

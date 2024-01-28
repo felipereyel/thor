@@ -30,4 +30,4 @@ db.sqlite
 tmp
 
 # templ
-components/*.go
+web/*.go

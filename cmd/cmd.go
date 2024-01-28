@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"goth/config"
-	"goth/routes"
+	"thor/internal/config"
+	"thor/internal/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
