@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -8,18 +9,19 @@ import (
 
 type ServerConfigs struct {
 	ServerAddress string
+	DataDir       string
 
 	AdminSecret string
 }
 
-func GetServerConfigs() ServerConfigs {
+func GetServerConfigs() (*ServerConfigs, error) {
 	config := ServerConfigs{}
 
 	// mandatory
 
 	config.AdminSecret = os.Getenv("ADMIN_SECRET")
 	if config.AdminSecret == "" {
-		panic("Missing ADMIN_SECRET")
+		return nil, fmt.Errorf("ADMIN_SECRET is not set")
 	}
 
 	// optional - with defaults
@@ -31,5 +33,12 @@ func GetServerConfigs() ServerConfigs {
 		config.ServerAddress = ":3000"
 	}
 
-	return config
+	envDataDir := os.Getenv("DATA_DIR")
+	if envDataDir != "" {
+		config.DataDir = envDataDir
+	} else {
+		config.DataDir = "./data"
+	}
+
+	return &config, nil
 }

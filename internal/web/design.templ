@@ -1,7 +1,6 @@
 package web
 
 import (
-    "fmt"
 	"thor/internal/models"
 )
 
@@ -16,11 +15,18 @@ templ rawPage(title string) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <script src="https://cdn.tailwindcss.com"></script>
             <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+            <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
         </head>
         <body class="bg-slate-900 text-white max-w-4xl my-0 mx-auto">
             { children... }
         </body>
     </html>
+}
+
+templ popup() {
+    <div class="fixed z-10 inset-0 overflow-y-auto">
+        { children... }
+    </div>
 }
 
 templ NotFoundPage() {
@@ -54,13 +60,12 @@ templ ErrorPage() {
     }
 }
 
-templ authenticatedPage(title string, breadcrumb, description string) {
+templ page(title string, breadcrumb, description string) {
     @rawPage(title) {
         <div class="px-4 sm:px-8 max-w-5xl m-auto">
             <div class="flex flex-col">
                 <div class="flex flex-row justify-between items-center">
                     <a href="/" class="text-2xl">{breadcrumb}</a>
-                    <a href="/auth/logout" class="bg-slate-800 border border-slate-600 rounded px-2">Logout</a>
                 </div>
                 if description != "" {
                     <p class="mt-2 text-xs mb-4 text-gray-500">{description}</p>
@@ -73,56 +78,57 @@ templ authenticatedPage(title string, breadcrumb, description string) {
     }
 }
 
-templ PostLogoutPage() {
-    @rawPage("Logout") {
-        <div class="px-4 sm:px-8 max-w-5xl m-auto">
-            <div class="flex flex-col">
-                <div class="flex flex-row justify-between items-center">
-                    <a href="/" class="text-2xl">Home</a>
-                    <a href="/auth/login" class="bg-slate-800 border border-slate-600 rounded px-2">Login</a>
-                </div>
-                <p class="mt-2 text-xs mb-4 text-gray-500">You need to login to proceed</p>
-            </div>
-        </div>
-    }
-}
-
 // Torrent Views
 
-templ TaskListPage(tasks []models.Torrent) {
-    @authenticatedPage("Tasks List", "Tasks", "Open Tasks To Do") {
-        <div>
-            <ul id="wrapper" class="border border-slate-600 rounded overflow-hidden shadow-md">
-                if len(tasks) > 0 {
-                    for _, task := range tasks {
-                        <li class="px-4 py-2 bg-slate-800 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-slate-600 transition-all duration-300 ease-in-out">
-                            <a href={ templ.URL("/edit/" + task.Id) }>{task.Title}</a>
-                        </li>
-                    }
-                } else {
-                    <li class="px-4 py-2 border border-slate-600 border-dashed rounded overflow-hidden shadow-md">
-                        <span>No Tasks</span>
+templ DownloadList(downloads []models.Download) {
+    <div id="downloads">
+        <ul class="border border-slate-600 rounded overflow-hidden shadow-md">
+            if len(downloads) > 0 {
+                for _, download := range downloads {
+                    <li class="px-4 py-2 bg-slate-800 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-slate-600 transition-all duration-300 ease-in-out">
+                        <span
+                            if download.Status == "Complete" {
+                                class="mx-2 text-xs px-2 py-1 rounded-full bg-green-600"
+                            } else if download.Status == "Error" {
+                                class="mx-2 text-xs px-2 py-1 rounded-full bg-red-600"
+                            } else {
+                                class="mx-2 text-xs px-2 py-1 rounded-full bg-blue-600"
+                            }
+                        >{download.Status}</span>
+                        <span>{download.Name}</span> 
                     </li>
                 }
-            </ul>
+            } else {
+                <li class="px-4 py-2 border border-slate-600 border-dashed rounded overflow-hidden shadow-md">
+                    <span>No Downloads</span>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+templ HomePage() {
+    @page("Downloads List", "Downloads", "Download list") {
+        <div hx-ext="ws" ws-connect="/downloads/ws" hx-target="downloads">
+            <div id="downloads"></div>
             <div class="mt-4 text-center px-4 py-2 bg-blue-600 hover:bg-sky-100 hover:text-sky-900 border border-slate-600 rounded overflow-hidden shadow-md">
-                <a href={ templ.URL("/new") }>Create New Task</a>
+                <a href={ templ.URL("/new") }>New</a>
             </div>
         </div>
     }
 }
 
-templ TaskEditPage(task models.Torrent) {
-    @authenticatedPage("Task Editor", fmt.Sprintf("Tasks > %s", task.Title), "Edit this task") {
-        <div>
-            <div class="flex flex-col">
-                <label for="title" class="text-xs mb-1">Title</label>
-                <input hx-post={"/edit/" + task.Id} type="text" name="title" id="title" value={ task.Title } class="bg-slate-800 border border-slate-600 rounded px-2 py-1 mb-4" />
-            </div>
-            <div class="flex flex-col">
-                <label for="description" class="text-xs mb-1">Description</label>
-                <textarea hx-post={"/edit/" + task.Id} name="description" id="description" class="bg-slate-800 border border-slate-600 rounded px-2 py-1 mb-4">{ task.Description }</textarea>
-            </div>
-        </div>
-    }
-}
+// templ DownloadEditPage(download torrent.Torrent) {
+//     @page("Download Editor", fmt.Sprintf("Downloads > %s", download.Title), "Edit this download") {
+//         <div>
+//             <div class="flex flex-col">
+//                 <label for="title" class="text-xs mb-1">Title</label>
+//                 <input hx-post={"/edit/" + download.Id} type="text" name="title" id="title" value={ download.Title } class="bg-slate-800 border border-slate-600 rounded px-2 py-1 mb-4" />
+//             </div>
+//             <div class="flex flex-col">
+//                 <label for="description" class="text-xs mb-1">Description</label>
+//                 <textarea hx-post={"/edit/" + download.Id} name="description" id="description" class="bg-slate-800 border border-slate-600 rounded px-2 py-1 mb-4">{ download.Description }</textarea>
+//             </div>
+//         </div>
+//     }
+// }

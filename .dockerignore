@@ -30,4 +30,4 @@ db.sqlite3
 tmp
 
 # templ
-web/*.go
+internal/web/*.go

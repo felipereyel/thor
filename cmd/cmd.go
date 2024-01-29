@@ -3,31 +3,41 @@ package cmd
 import (
 	"thor/internal/config"
 	"thor/internal/routes"
+	"thor/internal/services"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/spf13/cobra"
 )
 
-func Start(cmd *cobra.Command, args []string) {
-	cfg := config.GetServerConfigs()
+func Start(cmd *cobra.Command, args []string) error {
+	cfg, err := config.GetServerConfigs()
+	if err != nil {
+		return err
+	}
+
+	svcs, err := services.NewServices(cfg)
+	if err != nil {
+		return err
+	}
 
 	app := fiber.New(fiber.Config{
 		ErrorHandler: routes.ErrorHandler,
 	})
 
-	app.Use(cors.New())
-	routes.Init(app, cfg)
+	routes.Init(app, svcs)
 
-	if err := app.Listen(cfg.ServerAddress); err != nil {
-		panic(err.Error())
+	err = app.Listen(cfg.ServerAddress)
+	if err != nil {
+		return err
 	}
+
+	return nil
 }
 
 var rootCmd = &cobra.Command{
 	Use:   "thor",
 	Short: "start thor server",
-	Run:   Start,
+	RunE:  Start,
 }
 
 func Execute() {
