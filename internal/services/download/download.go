@@ -41,27 +41,6 @@ func (svc *downloadSvc) Close() error {
 	return nil
 }
 
-func (svc *downloadSvc) AddDownload(hashString string) (models.Download, error) {
-	infoHash, err := utils.MetafromHex(hashString)
-	if err != nil {
-		return models.EmptyDownload, err
-	}
-
-	torrent, new := svc.client.AddTorrentInfoHash(infoHash)
-
-	if !new {
-		fmt.Println("torrent already exists")
-		return models.EmptyDownload, errors.New("torrent already exists")
-	}
-
-	<-torrent.GotInfo()
-	go handleTorrent(torrent)
-
-	fmt.Printf("Added torrent: %s\n", torrent.Name())
-
-	return models.EmptyDownload, nil
-}
-
 func (svc *downloadSvc) ListDownloads() []models.Download {
 	torrs := svc.client.Torrents()
 
@@ -73,7 +52,26 @@ func (svc *downloadSvc) ListDownloads() []models.Download {
 	return downloads
 }
 
+func (svc *downloadSvc) AddDownload(hashString string) error {
+	infoHash, err := utils.MetafromHex(hashString)
+	if err != nil {
+		return err
+	}
+
+	torrent, new := svc.client.AddTorrentInfoHash(infoHash)
+	if !new {
+		fmt.Println("torrent already exists")
+		return errors.New("torrent already exists")
+	}
+
+	go handleTorrent(torrent)
+	return nil
+}
+
 func handleTorrent(torrent *torrent.Torrent) {
+	<-torrent.GotInfo()
+	fmt.Printf("Added torrent: %s\n", torrent.Name())
+
 	torrent.DownloadAll()
 	<-torrent.Complete.On()
 	fmt.Printf("Downloaded torrent: %s\n", torrent.Name())

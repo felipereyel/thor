@@ -8,8 +8,6 @@ type Download struct {
 	Status string
 }
 
-var EmptyDownload = Download{}
-
 func DownloadFromTorrent(torr *torrent.Torrent) Download {
 	download := Download{
 		Name: torr.Name(),
