@@ -7,5 +7,5 @@ import (
 type IDownload interface {
 	Close() error
 	ListDownloads() []models.Download
-	AddDownload(hashString string) (models.Download, error)
+	AddDownload(hashString string) error
 }

@@ -43,7 +43,7 @@ func createDownload(svcs *services.Services, c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	_, err := svcs.Download.AddDownload(req.Hash)
+	err := svcs.Download.AddDownload(req.Hash)
 	if err != nil {
 		fmt.Printf("error: %s\n", err.Error())
 		return c.SendStatus(fiber.StatusBadRequest)
