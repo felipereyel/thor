@@ -11,6 +11,7 @@ import (
 func Init(app *fiber.App, svcs *services.Services) error {
 	app.Use(cors.New())
 	app.Get("/", homeHandler)
+	app.Get("/discard", discardHandler)
 	app.Use("/healthz", healthzHandler)
 
 	downloadsGroup := app.Group("/downloads")
@@ -22,4 +23,12 @@ func Init(app *fiber.App, svcs *services.Services) error {
 
 func homeHandler(c *fiber.Ctx) error {
 	return sendPage(c, web.HomePage())
+}
+
+func healthzHandler(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusOK)
+}
+
+func discardHandler(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusOK)
 }

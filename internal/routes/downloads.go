@@ -11,8 +11,14 @@ import (
 )
 
 func initDownloadsRoutes(gp fiber.Router, svcs *services.Services) {
+	gp.Get("/new", newDownloadHandler)
+
 	gp.Post("/", bindCtx(svcs, createDownload))
 	gp.Get("/ws", wsUpgrade, bindWSCtx(svcs, wsDownloadsHandler))
+}
+
+func newDownloadHandler(c *fiber.Ctx) error {
+	return sendPage(c, web.NewDownload())
 }
 
 func wsDownloadsHandler(svcs *services.Services, c *websocket.Conn) {

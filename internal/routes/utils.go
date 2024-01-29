@@ -23,10 +23,6 @@ func notFoundHandler(c *fiber.Ctx) error {
 	return sendPage(c, web.NotFoundPage())
 }
 
-func healthzHandler(c *fiber.Ctx) error {
-	return c.SendStatus(fiber.StatusOK)
-}
-
 func sendPage(c *fiber.Ctx, page templ.Component) error {
 	c.Set("Content-Type", "text/html")
 	return page.Render(context.Background(), c)
