@@ -7,6 +7,7 @@ toolchain go1.21.3
 require (
 	github.com/a-h/templ v0.2.364
 	github.com/anacrolix/torrent v1.53.3
+	github.com/gofiber/contrib/websocket v1.3.0
 	github.com/gofiber/fiber/v2 v2.51.0
 	github.com/joho/godotenv v1.5.1
 	github.com/spf13/cobra v1.7.0
@@ -44,7 +45,6 @@ require (
 	github.com/go-llsqlite/crawshaw v0.4.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/gofiber/contrib/websocket v1.3.0 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
