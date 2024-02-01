@@ -2,10 +2,8 @@ module thor
 
 go 1.21
 
-toolchain go1.21.3
-
 require (
-	github.com/a-h/templ v0.2.364
+	github.com/a-h/templ v0.2.543
 	github.com/anacrolix/torrent v1.53.3
 	github.com/gofiber/contrib/websocket v1.3.0
 	github.com/gofiber/fiber/v2 v2.51.0
