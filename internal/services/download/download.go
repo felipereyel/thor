@@ -3,9 +3,10 @@ package download
 import (
 	"errors"
 	"fmt"
-	"thor/internal/config"
-	"thor/internal/models"
-	"thor/internal/utils"
+
+	"github.com/felipereyel/thor/internal/config"
+	"github.com/felipereyel/thor/internal/models"
+	"github.com/felipereyel/thor/internal/utils"
 
 	"github.com/anacrolix/torrent"
 )

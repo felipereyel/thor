@@ -8,11 +8,15 @@ import (
 )
 
 type ServerConfigs struct {
+	AdminSecret string
+
 	ServerAddress string
+
+	MigrationsDir string
 	DataDir       string
 	ConfigDir     string
 
-	AdminSecret string
+	DatabaseFile string
 }
 
 func GetServerConfigs() (*ServerConfigs, error) {
@@ -34,6 +38,13 @@ func GetServerConfigs() (*ServerConfigs, error) {
 		config.ServerAddress = ":3000"
 	}
 
+	envMigrationsDir := os.Getenv("MIGRATIONS_DIR")
+	if envMigrationsDir != "" {
+		config.MigrationsDir = envMigrationsDir
+	} else {
+		config.MigrationsDir = "/migrations"
+	}
+
 	envDataDir := os.Getenv("DATA_DIR")
 	if envDataDir != "" {
 		config.DataDir = envDataDir
@@ -47,6 +58,8 @@ func GetServerConfigs() (*ServerConfigs, error) {
 	} else {
 		config.ConfigDir = "/config"
 	}
+
+	config.DatabaseFile = fmt.Sprintf("%s/%s", config.ConfigDir, "thor.sqlite3")
 
 	return &config, nil
 }

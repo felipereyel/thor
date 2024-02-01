@@ -2,9 +2,10 @@ package routes
 
 import (
 	"fmt"
-	"thor/internal/services"
-	"thor/internal/web"
 	"time"
+
+	"github.com/felipereyel/thor/internal/services"
+	"github.com/felipereyel/thor/internal/web"
 
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"

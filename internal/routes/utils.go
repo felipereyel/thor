@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"thor/internal/services"
-	"thor/internal/web"
+
+	"github.com/felipereyel/thor/internal/services"
+	"github.com/felipereyel/thor/internal/web"
 
 	"github.com/a-h/templ"
 	"github.com/gofiber/contrib/websocket"

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"thor/internal/services"
-	"thor/internal/web"
+	"github.com/felipereyel/thor/internal/services"
+	"github.com/felipereyel/thor/internal/web"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

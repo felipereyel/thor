@@ -1,7 +1,7 @@
 package download
 
 import (
-	"thor/internal/models"
+	"github.com/felipereyel/thor/internal/models"
 )
 
 type IDownload interface {

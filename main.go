@@ -1,7 +1,7 @@
 package main
 
 import (
-	"thor/cmd"
+	"github.com/felipereyel/thor/internal/cmd"
 )
 
 func main() {

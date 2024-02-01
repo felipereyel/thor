@@ -7,7 +7,6 @@ RUN go mod download
 RUN go install github.com/a-h/templ/cmd/templ@v0.2.543
 
 COPY main.go  .
-COPY cmd ./cmd
 COPY internal ./internal
 # TODO
 
@@ -17,6 +16,9 @@ RUN go build -o ./goapp
 # Build the final image
 FROM alpine:latest as release
 COPY --from=goapp /app/goapp /goapp
+
+COPY internal/migrations /migrations
+ENV MIGRATIONS_DIR=/migrations
 
 WORKDIR /app
 CMD ["/goapp"]
