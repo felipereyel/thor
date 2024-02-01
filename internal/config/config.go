@@ -42,7 +42,8 @@ func GetServerConfigs() (*ServerConfigs, error) {
 	if envMigrationsDir != "" {
 		config.MigrationsDir = envMigrationsDir
 	} else {
-		config.MigrationsDir = "/migrations"
+		// defaults to migrations folder
+		config.MigrationsDir = "./migrations"
 	}
 
 	envDataDir := os.Getenv("DATA_DIR")
