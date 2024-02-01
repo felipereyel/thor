@@ -1,7 +1,10 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/felipereyel/thor/internal/config"
+	"github.com/felipereyel/thor/internal/services"
 
 	"github.com/spf13/cobra"
 )
@@ -16,7 +19,16 @@ func Start(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	return startFiber(cfg)
+	svcs, err := services.NewServices(cfg)
+	if err != nil {
+		return err
+	}
+
+	if err := recoverTorrents(svcs); err != nil {
+		fmt.Printf("error recovering torrents: %s\n", err)
+	}
+
+	return startFiber(svcs)
 }
 
 var rootCmd = &cobra.Command{

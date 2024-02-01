@@ -25,6 +25,7 @@ func (db *database) Close() error {
 }
 
 func (db *database) UpsertTrack(hash string, status string) error {
+	// TODO: add mutex
 	query := `
 		INSERT INTO 
 			tracks (hash, status) 
@@ -39,8 +40,8 @@ func (db *database) UpsertTrack(hash string, status string) error {
 	return err
 }
 
-func (db *database) ListTracks() ([]string, error) {
-	query := `SELECT hash FROM tracks`
+func (db *database) ListNonDeletedTracks() ([]string, error) {
+	query := `SELECT hash FROM tracks WHERE status != 'deleted'`
 	rows, err := db.conn.Query(query)
 	if err != nil {
 		return nil, err

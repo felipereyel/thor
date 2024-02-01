@@ -1,6 +1,6 @@
 # thor
 Torrent server
 
-- save torr db
+- recover torr - missing mutex 
 - auth
 - improve db
