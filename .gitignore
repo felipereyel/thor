@@ -33,5 +33,5 @@ tmp
 internal/web/*.go
 
 # Data
-data/
+volumes/
 screenshots/

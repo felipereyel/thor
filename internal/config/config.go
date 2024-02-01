@@ -10,6 +10,7 @@ import (
 type ServerConfigs struct {
 	ServerAddress string
 	DataDir       string
+	ConfigDir     string
 
 	AdminSecret string
 }
@@ -37,7 +38,14 @@ func GetServerConfigs() (*ServerConfigs, error) {
 	if envDataDir != "" {
 		config.DataDir = envDataDir
 	} else {
-		config.DataDir = "./data"
+		config.DataDir = "/data"
+	}
+
+	envConfigDir := os.Getenv("CONFIG_DIR")
+	if envConfigDir != "" {
+		config.ConfigDir = envConfigDir
+	} else {
+		config.ConfigDir = "/config"
 	}
 
 	return &config, nil

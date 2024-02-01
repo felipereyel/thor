@@ -31,3 +31,5 @@ tmp
 
 # templ
 internal/web/*.go
+
+volumes/
