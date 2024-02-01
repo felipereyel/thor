@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/felipereyel/thor/internal/routine"
 	"github.com/felipereyel/thor/internal/services"
 	"github.com/felipereyel/thor/internal/web"
 
@@ -50,11 +51,13 @@ func createDownload(svcs *services.Services, c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	err := svcs.Download.AddDownload(req.Hash)
+	torrent, err := svcs.Download.AddDownload(req.Hash)
 	if err != nil {
 		fmt.Printf("error: %s\n", err.Error())
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
+
+	go routine.HandleTorrent(svcs, torrent)
 
 	return c.SendStatus(fiber.StatusOK)
 }

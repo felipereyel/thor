@@ -24,9 +24,18 @@ func (db *database) Close() error {
 	return db.conn.Close()
 }
 
-func (db *database) CreateTrack(hash string) error {
-	query := `INSERT INTO tracks (hash, status) VALUES (?, 'created')`
-	_, err := db.conn.Exec(query, hash)
+func (db *database) UpsertTrack(hash string, status string) error {
+	query := `
+		INSERT INTO 
+			tracks (hash, status) 
+		VALUES 
+			(?, ?) 
+		ON CONFLICT(hash) DO 
+		UPDATE SET 
+			status = ?, 
+			updated_at = datetime('now')
+	`
+	_, err := db.conn.Exec(query, hash, status, status)
 	return err
 }
 
@@ -49,10 +58,4 @@ func (db *database) ListTracks() ([]string, error) {
 	}
 
 	return hashes, nil
-}
-
-func (db *database) UpdateTrackStatus(hash string, status string) error {
-	query := `UPDATE tracks SET status = ? WHERE hash = ?`
-	_, err := db.conn.Exec(query, status, hash)
-	return err
 }

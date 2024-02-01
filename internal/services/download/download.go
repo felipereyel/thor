@@ -53,27 +53,17 @@ func (svc *downloadSvc) ListDownloads() []models.Download {
 	return downloads
 }
 
-func (svc *downloadSvc) AddDownload(hashString string) error {
+func (svc *downloadSvc) AddDownload(hashString string) (*torrent.Torrent, error) {
 	infoHash, err := utils.MetafromHex(hashString)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	torrent, new := svc.client.AddTorrentInfoHash(infoHash)
 	if !new {
 		fmt.Println("torrent already exists")
-		return errors.New("torrent already exists")
+		return nil, errors.New("torrent already exists")
 	}
 
-	go handleTorrent(torrent)
-	return nil
-}
-
-func handleTorrent(torrent *torrent.Torrent) {
-	<-torrent.GotInfo()
-	fmt.Printf("Added torrent: %s\n", torrent.Name())
-
-	torrent.DownloadAll()
-	<-torrent.Complete.On()
-	fmt.Printf("Downloaded torrent: %s\n", torrent.Name())
+	return torrent, nil
 }
