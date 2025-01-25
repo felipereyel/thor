@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/felipereyel/thor/internal/routine"
-	"github.com/felipereyel/thor/internal/services"
+	"thor/internal/routine"
+	"thor/internal/services"
 )
 
 func recoverTorrents(svcs *services.Services) error {

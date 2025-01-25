@@ -5,8 +5,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/felipereyel/thor/internal/services"
-	"github.com/felipereyel/thor/internal/web"
+	"thor/internal/components"
+	"thor/internal/services"
 
 	"github.com/a-h/templ"
 	"github.com/gofiber/contrib/websocket"
@@ -16,12 +16,12 @@ import (
 func ErrorHandler(c *fiber.Ctx, err error) error {
 	c.SendStatus(fiber.StatusInternalServerError)
 	fmt.Printf("Route Error [%s]: %v\n", c.Path(), err)
-	return sendPage(c, web.ErrorPage())
+	return sendPage(c, components.ErrorPage())
 }
 
 func notFoundHandler(c *fiber.Ctx) error {
 	c.SendStatus(fiber.StatusNotFound)
-	return sendPage(c, web.NotFoundPage())
+	return sendPage(c, components.NotFoundPage())
 }
 
 func sendPage(c *fiber.Ctx, page templ.Component) error {

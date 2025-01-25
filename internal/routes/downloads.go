@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/felipereyel/thor/internal/routine"
-	"github.com/felipereyel/thor/internal/services"
-	"github.com/felipereyel/thor/internal/web"
+	"thor/internal/components"
+	"thor/internal/routine"
+	"thor/internal/services"
 
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
@@ -20,13 +20,13 @@ func initDownloadsRoutes(gp fiber.Router, svcs *services.Services) {
 }
 
 func newDownloadHandler(c *fiber.Ctx) error {
-	return sendPage(c, web.NewDownload())
+	return sendPage(c, components.NewDownload())
 }
 
 func wsDownloadsHandler(svcs *services.Services, c *websocket.Conn) {
 	for {
 		torrs := svcs.Download.ListDownloads()
-		component := web.DownloadList(torrs)
+		component := components.DownloadList(torrs)
 
 		if err := sendPageWS(c, component); err != nil {
 			c.Close()

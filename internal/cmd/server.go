@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/felipereyel/thor/internal/routes"
-	"github.com/felipereyel/thor/internal/services"
+	"thor/internal/routes"
+	"thor/internal/services"
 
 	"github.com/gofiber/fiber/v2"
 )

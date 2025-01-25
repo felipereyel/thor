@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/felipereyel/thor/internal/config"
-	"github.com/felipereyel/thor/internal/services"
+	"thor/internal/config"
+	"thor/internal/services"
 
 	"github.com/spf13/cobra"
 )

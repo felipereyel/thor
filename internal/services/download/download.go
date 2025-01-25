@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/felipereyel/thor/internal/config"
-	"github.com/felipereyel/thor/internal/models"
-	"github.com/felipereyel/thor/internal/utils"
+	"thor/internal/config"
+	"thor/internal/models"
+	"thor/internal/utils"
 
 	"github.com/anacrolix/torrent"
 )

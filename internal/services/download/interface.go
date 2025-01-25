@@ -1,8 +1,9 @@
 package download
 
 import (
+	"thor/internal/models"
+
 	"github.com/anacrolix/torrent"
-	"github.com/felipereyel/thor/internal/models"
 )
 
 type IDownload interface {

@@ -30,6 +30,6 @@ db.sqlite3
 tmp
 
 # templ
-internal/web/*.go
+internal/components/*.go
 
 volumes/

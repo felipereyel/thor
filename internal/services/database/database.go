@@ -3,7 +3,8 @@ package database
 import (
 	"database/sql"
 
-	"github.com/felipereyel/thor/internal/config"
+	"thor/internal/config"
+
 	_ "modernc.org/sqlite"
 )
 

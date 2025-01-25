@@ -1,9 +1,9 @@
 package services
 
 import (
-	"github.com/felipereyel/thor/internal/config"
-	"github.com/felipereyel/thor/internal/services/database"
-	"github.com/felipereyel/thor/internal/services/download"
+	"thor/internal/config"
+	"thor/internal/services/database"
+	"thor/internal/services/download"
 )
 
 type Services struct {

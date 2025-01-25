@@ -3,8 +3,9 @@ package routine
 import (
 	"fmt"
 
+	"thor/internal/services"
+
 	"github.com/anacrolix/torrent"
-	"github.com/felipereyel/thor/internal/services"
 )
 
 func HandleTorrent(svcs *services.Services, torrent *torrent.Torrent) {

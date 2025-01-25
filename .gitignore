@@ -30,7 +30,10 @@ db.sqlite
 tmp
 
 # templ
-internal/web/*.go
+internal/components/*.go
+
+# js
+*.js
 
 # Data
 volumes/

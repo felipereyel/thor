@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/felipereyel/thor/internal/services"
-	"github.com/felipereyel/thor/internal/web"
+	"thor/internal/components"
+	"thor/internal/services"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -12,6 +12,7 @@ func Init(app *fiber.App, svcs *services.Services) error {
 	app.Use(cors.New())
 	app.Get("/", homeHandler)
 	app.Get("/discard", discardHandler)
+	app.Use("/statics", staticsHandler)
 	app.Use("/healthz", healthzHandler)
 
 	downloadsGroup := app.Group("/downloads")
@@ -22,7 +23,7 @@ func Init(app *fiber.App, svcs *services.Services) error {
 }
 
 func homeHandler(c *fiber.Ctx) error {
-	return sendPage(c, web.HomePage())
+	return sendPage(c, components.HomePage())
 }
 
 func healthzHandler(c *fiber.Ctx) error {
